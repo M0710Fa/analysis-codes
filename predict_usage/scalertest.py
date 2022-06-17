@@ -4,7 +4,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from sklearn.preprocessing import StandardScaler
 
-df = pd.read_csv('datas/dfix.csv')
+df = pd.read_csv('../analysis-datas/src/fixed_usage.csv')
 
 # データの標準化
 scaler = StandardScaler()
@@ -26,7 +26,7 @@ result = model.fit()
 result.summary()
 
 
-dt = pd.read_csv('datas/test.csv')
+dt = pd.read_csv('../analysis-datas/tests/test-1day.csv')
 
 x_test = pd.get_dummies(dt[["app","week","time"]] )
 y_test = dt['used'] 
