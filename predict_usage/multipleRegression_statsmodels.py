@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import numpy as np
@@ -24,6 +25,10 @@ result = model.fit()
 # 重回帰分析の結果を表示する
 print(result.summary())
 
+Xst = sm.add_constant(X_test)
+pred = result.predict(Xst)
+rmse = np.sqrt(mean_squared_error(Y_test,pred))
+print(rmse)
 
 
 # dt = pd.read_csv('../analysis-datas/tests/test-1day.csv')
