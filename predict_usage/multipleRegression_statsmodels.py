@@ -3,6 +3,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import numpy as np
+import datetime
 
 df = pd.read_csv("../analysis-datas/src/usage_intest.csv")
 
@@ -28,8 +29,10 @@ print(result.summary())
 Xst = sm.add_constant(X_test)
 pred = result.predict(Xst)
 rmse = np.sqrt(mean_squared_error(Y_test,pred))
-print(rmse)
 
+print(rmse)
+rmse_msec  = datetime.timedelta(milliseconds=rmse)
+print("rmse（分）：{}".format(rmse_msec.seconds/60))
 
 # dt = pd.read_csv('../analysis-datas/tests/test-1day.csv')
 
