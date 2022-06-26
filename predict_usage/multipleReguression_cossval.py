@@ -6,6 +6,11 @@ import statsmodels.api as sm
 import numpy as np
 import datetime
 
+def rmse_score(y_true, y_pred):
+    """RMSE (Root Mean Square Error: 平均二乗誤差平方根) を計算する関数"""
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    return rmse
+
 df = pd.read_csv("../analysis-datas/src/usage_intest.csv")
 
  # 説明変数
@@ -25,30 +30,12 @@ model = sm.OLS(Y_train, Xsm)
 result = model.fit()
 
 # 重回帰分析の結果を表示する
-# print(result.summary())
+print(result.summary())
 
-# Xst = sm.add_constant(X_test)
-# pred = result.predict(Xst)
-# rmse = np.sqrt(mean_squared_error(Y_test,pred))
-# print(rmse)
-# print(pred)
-# print(*np.array(pred,dtype="i8"),sep=',')
-# rmse_msec  = datetime.timedelta(milliseconds=rmse)
-# print("rmse（分）：{}".format(rmse_msec.seconds/60))
-
-print(*result.params, sep=",")
-
-
-# dt = pd.read_csv('../analysis-datas/tests/test-1day.csv')
-
-# x_test = pd.get_dummies(dt[["app","week","time"]],drop_first=True)
-# y_test = dt['used'] 
-# X_test = sm.add_constant(x_test)
-
-# # print(result.summary())
-# print(result.predict(X))
-
-# print("R2: {}".format(result.rsquared))
-
-# fig = df.plot(x,y, figsize=(12,5), title='グラフ').figure()
-# fig.savefig("img.png")
+Xst = sm.add_constant(X_test)
+pred = result.predict(Xst)
+rmse = np.sqrt(mean_squared_error(Y_test,pred))
+print(pred)
+print(int(rmse))
+rmse_msec  = datetime.timedelta(milliseconds=rmse)
+print("rmse（分）：{}".format(rmse_msec.seconds/60))
