@@ -1,32 +1,25 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler, scale
+from sklearn.model_selection import train_test_split
+import numpy as np
 
-df = pd.read_csv("../analysis-datas/src/fixed_usage.csv")
+df = pd.read_csv("../analysis-datas/src/usage_intest.csv")
 
  # 説明変数
 x = pd.get_dummies(df[["app","week","time"]],drop_first=True)
-x1 = [["app"]]
-x2 = [["week"]]
-x3 = [["time"]]
-
+X = np.array(x)
 # 目的変数
-y = df[["used"]]
+Y = np.array(df["used"])
 
-scaler = StandardScaler()
-scaler.fit(x)
-x_std = scaler.transform(x)
-scaler.fit(y)
-y_std = scaler.transform(y)
+# データの分割(訓練データとテストデータ)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 
 model = LinearRegression()
-model.fit(x_std, y_std)
-print(model.coef_)
-print(model.score(x_std, y_std))
+model.fit(X_train, Y_train)
 
-dt = pd.read_csv("../analysis-datas/tests/test-1day.csv")
-test_x = pd.get_dummies(df[["app","week","time"]],drop_first=True)
-test_y = df[["used"]]
-
-pred = scaler.inverse_transform(model.predict(test_x))
-print(pred)
+# 結果
+print("【回帰係数】", model.coef_)
+print("【切片】:", model.intercept_)
+print("【決定係数(訓練)】:", model.score(X_train, Y_train))
+print("【決定係数(テスト)】:", model.score(X_test, Y_test))
