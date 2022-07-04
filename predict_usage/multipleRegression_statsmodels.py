@@ -18,14 +18,14 @@ Y = np.array(df["used"])
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 
 # 定数項(y切片)を必要とする線形回帰のモデル式ならば必須
-Xsm = sm.add_constant(X_train)
+Xsm = sm.add_constant(X)
 
 # 最小二乗法でモデル化
-model = sm.OLS(Y_train, Xsm)
+model = sm.OLS(Y, Xsm)
 result = model.fit()
 
 # 重回帰分析の結果を表示する
-# print(result.summary())
+print(result.summary())
 
 # Xst = sm.add_constant(X_test)
 # pred = result.predict(Xst)
@@ -36,7 +36,8 @@ result = model.fit()
 # rmse_msec  = datetime.timedelta(milliseconds=rmse)
 # print("rmse（分）：{}".format(rmse_msec.seconds/60))
 
-print(*result.params, sep=",")
+#print(*result.params, sep=",")
+print(*np.array(result.params,dtype="i8"),sep=',')
 
 
 # dt = pd.read_csv('../analysis-datas/tests/test-1day.csv')
