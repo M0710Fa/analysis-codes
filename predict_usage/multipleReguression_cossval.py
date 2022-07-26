@@ -32,6 +32,7 @@ result = model.fit()
 # 重回帰分析の結果を表示する
 print(result.summary())
 
+print(type(X_test))
 Xst = sm.add_constant(X_test)
 pred = result.predict(Xst)
 rmse = np.sqrt(mean_squared_error(Y_test,pred))

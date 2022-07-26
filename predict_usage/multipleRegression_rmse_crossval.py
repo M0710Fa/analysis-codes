@@ -16,25 +16,28 @@ def rmse_score(y_true, y_pred):
 
 df = pd.read_csv("../analysis-datas/src/usage_intest.csv")
 
+print(df)
+
  # 説明変数
 x = pd.get_dummies(df[["app","week","time"]],drop_first=True)
 X = np.array(x)
 # 目的変数
-Y = np.array(df["used"])
+y = df["used"]
+Y = np.array(y)
 
 LR = LinearRegression()
 
 kf = KFold(n_splits=4, shuffle=True, random_state=0)
 
-score_funcs = {
-    'rmse': make_scorer(rmse_score),
-}
+# score_funcs = {
+#     'rmse': make_scorer(rmse_score),
+# }
 
-scores = cross_validate(LR, X, Y, cv=kf, scoring=score_funcs)
-mean_rmse = scores['test_rmse'].mean()
-print('RMSE:', mean_rmse)
-rmse_msec  = datetime.timedelta(milliseconds=mean_rmse)
-print("rmse（分）：{}".format(rmse_msec.seconds/60))
+# scores = cross_validate(LR, x, y, cv=kf, scoring=score_funcs)
+# mean_rmse = scores['test_rmse'].mean()
+# print('RMSE:', mean_rmse)
+# rmse_msec  = datetime.timedelta(milliseconds=mean_rmse)
+# print("rmse（分）：{}".format(rmse_msec.seconds/60))
 
 # 各分割におけるスコア
 # print('Cross-Validation scores: {}'.format(scores))
