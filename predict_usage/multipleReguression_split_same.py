@@ -13,19 +13,29 @@ def statsmodels(x, xt, y, yt):
     # 最小二乗法でモデル化
     model = sm.OLS(y, xsm)
     result = model.fit()
+    print(*np.array(result.params,dtype="f4"),sep=',')
 
 def sklearn(x, xt, y, yt):
     model = LinearRegression()
     model.fit(x, y)
+    print("【切片】:", model.intercept_)
+    print(*np.array(model.coef_,dtype="f4"),sep=',')
 
 
 df = pd.read_csv("../analysis-datas/src/usage_intest.csv")
 
  # 説明変数
-x = pd.get_dummies(df[["app","week","time"]],drop_first=True)
+x = pd.get_dummies(df[["app","week","time"]],drop_first=False)
 X = np.array(x)
 # 目的変数
-Y = np.array(df["used"])
+y = df["used"]
+Y = np.array(y)
 
 # データの分割(訓練データとテストデータ)
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
+X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.3, random_state=0)
+
+statsmodels(x, X_test, y, Y_test)
+sklearn(x, X_test, y, Y_test)
+
+statsmodels(X_train, X_test, Y_train, Y_test)
+sklearn(X_train, X_test, Y_train, Y_test)
