@@ -45,7 +45,7 @@ mean_mae = scores['test_mae'].mean()
 print('RMSE:', mean_rmse)
 rmse_msec  = datetime.timedelta(milliseconds=mean_rmse)
 print("rmse（分）：{}".format(rmse_msec.seconds/60))
-print('RMSE:', mean_mae)
+print('MAE:', mean_mae)
 mae_msec  = datetime.timedelta(milliseconds=mean_mae)
 print("mae（分）：{}".format(mae_msec.seconds/60))
 
