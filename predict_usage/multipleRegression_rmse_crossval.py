@@ -8,13 +8,18 @@ import statsmodels.api as sm
 import numpy as np
 from sklearn.metrics import make_scorer
 import datetime
+from sklearn.metrics import mean_absolute_error
 
 def rmse_score(y_true, y_pred):
     """RMSE (Root Mean Square Error: 平均二乗誤差平方根) を計算する関数"""
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))
     return rmse
 
-df = pd.read_csv("../analysis-datas/src/usage_intest.csv")
+def mae_score(y_true, y_pred):
+    mae = mean_absolute_error(y_true, y_pred)
+    return mae
+
+df = pd.read_csv("../analysis-datas/src/2week_data.csv")
 
 print(df)
 
@@ -27,17 +32,22 @@ Y = np.array(y)
 
 LR = LinearRegression()
 
-kf = KFold(n_splits=4, shuffle=True, random_state=0)
+kf = KFold(n_splits= 10, shuffle=True, random_state=0)
 
-# score_funcs = {
-#     'rmse': make_scorer(rmse_score),
-# }
+score_funcs = {
+    'rmse': make_scorer(rmse_score),
+    'mae': make_scorer(mae_score),
+}
 
-# scores = cross_validate(LR, x, y, cv=kf, scoring=score_funcs)
-# mean_rmse = scores['test_rmse'].mean()
-# print('RMSE:', mean_rmse)
-# rmse_msec  = datetime.timedelta(milliseconds=mean_rmse)
-# print("rmse（分）：{}".format(rmse_msec.seconds/60))
+scores = cross_validate(LR, x, y, cv=kf, scoring=score_funcs)
+mean_rmse = scores['test_rmse'].mean()
+mean_mae = scores['test_mae'].mean()
+print('RMSE:', mean_rmse)
+rmse_msec  = datetime.timedelta(milliseconds=mean_rmse)
+print("rmse（分）：{}".format(rmse_msec.seconds/60))
+print('RMSE:', mean_mae)
+mae_msec  = datetime.timedelta(milliseconds=mean_mae)
+print("mae（分）：{}".format(mae_msec.seconds/60))
 
 # 各分割におけるスコア
 # print('Cross-Validation scores: {}'.format(scores))
