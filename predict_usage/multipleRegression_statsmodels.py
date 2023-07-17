@@ -1,3 +1,4 @@
+# %%
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
@@ -6,7 +7,7 @@ import statsmodels.api as sm
 import numpy as np
 import datetime
 
-df = pd.read_csv("../analysis-datas/src/2week_data.csv", encoding="utf_8")
+df = pd.read_csv("../../analysis-datas/src/2week_data.csv", encoding="utf_8")
 
  # 説明変数
 x = pd.get_dummies(df[["week","time"]],drop_first=False)
@@ -58,3 +59,5 @@ print("rmse（分）：{}".format(rmse_msec.seconds/60))
 
 # fig = df.plot(x,y, figsize=(12,5), title='グラフ').figure()
 # fig.savefig("img.png")
+
+# %%
